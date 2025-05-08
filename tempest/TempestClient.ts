@@ -1,5 +1,5 @@
 import { fetch } from "bun";
-import type { TempestResponse, TempestWeatherData } from "./types";
+import type { TempestResponse, TempestStationsResponse, TempestWeatherData } from "./types";
 const { TEMPEST_TOKEN } = process.env;
 
 
@@ -58,7 +58,27 @@ async function getForecast<T>(stationId: number): Promise <TempestWeatherData | 
   }
 }
 
+async function getStations<T>(): Promise<TempestStationsResponse | null> {
+  const STATIONS_API = "https://swd.weatherflow.com/swd/rest/stations";
+
+  try {
+    const response = await fetch(`${STATIONS_API}?token=${TEMPEST_TOKEN}`, {
+      headers
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    return await response.json() as TempestStationsResponse;
+  } catch (error) {
+    console.error("Error fetching stations:", error);
+    return null;
+  }
+}
+
 export {
   getObservations,
   getForecast,
+  getStations
 };

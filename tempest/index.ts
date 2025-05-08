@@ -1,8 +1,8 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { getForecast } from "./TempestClient";
-import type { TempestWeatherData } from "./types.ts";
+import { getForecast, getStations } from "./TempestClient";
+import type { TempestStationsResponse, TempestWeatherData } from "./types.ts";
 
 
 // Create server instance
@@ -23,6 +23,26 @@ server.tool(
   },
   async({ stationId }) => {
     const weatherData = await getForecast<TempestWeatherData>(stationId);
+    if (!weatherData) {
+      throw new Error("Failed to fetch weather data");
+    }
+    return {
+      content: [
+        {
+          type: "text",
+          text: `Current observations and forecasts are ${JSON.stringify(weatherData)}`,
+        }
+      ]
+    }
+  }
+);
+
+server.tool(
+ "get-stations",
+  "Get List of stations available",
+  {},
+  async() => {
+    const weatherData = await getStations<TempestStationsResponse>();
     if (!weatherData) {
       throw new Error("Failed to fetch weather data");
     }
