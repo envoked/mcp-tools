@@ -30,7 +30,7 @@ server.tool(
       content: [
         {
           type: "text",
-          text: `Current Observations are ${JSON.stringify(weatherData)}`,
+          text: `Current observations and forecasts are ${JSON.stringify(weatherData)}`,
         }
       ]
     }
