@@ -15,7 +15,6 @@
       "watchMode": false,
       "env": {
         "NODE_TLS_REJECT_UNAUTHORIZED": "0",
-        "PROTECT_API_KEY": "DsB29dEjkDG0Z6dt_b1kjXDSmiODXEUe"
       }
     },
     {
