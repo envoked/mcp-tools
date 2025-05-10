@@ -1,7 +1,6 @@
 /**
  * Client for interacting with the official Unifi Protect API
  */
-import { fetch } from "bun";
 import { DeviceResponse } from "./types";
 
 export default class ProtectClient {
@@ -19,6 +18,12 @@ export default class ProtectClient {
     const endpoint = `/network/integration/v1/sites/${siteId}/clients`;
     const res = await ProtectClient.makeRequest(endpoint, 'GET');
     return res.json() as DeviceResponse;
+  }
+
+  static async getClientDetails<DeviceResponse>(siteId: string, deviceId: string): Promise<DeviceResponse> {
+    const endpoint = `/network/integration/v1/sites/${siteId}/devices/${deviceId}`;
+    const res = await ProtectClient.makeRequest(endpoint, 'GET');
+    return res.json();
   }
 
   static async getSnapshot(deviceId: string, camera: string ): Promise<Response> {
