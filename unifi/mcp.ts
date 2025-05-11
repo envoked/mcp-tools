@@ -50,6 +50,44 @@ server.tool(
   }
 );
 
+server.tool(
+  "get-cameras",
+  "Get a list of all cameras connected",
+  async() => {
+    let res = await ProtectClient.getCameras();
+    const data = await res.json()
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(data)
+        }
+      ]
+    }
+  }
+);
+server.tool(
+  "get-camera-snapshot",
+  "Get a snapshot from a given camera",
+  {
+    cameraId: z.string().describe("cameraId")
+  },
+  async({ cameraId }) => {
+    let res = await ProtectClient.getSnapshot(cameraId);
+    const data = await res.arrayBuffer()
+    const base64String = Buffer.from(data).toString('base64');
+    return {
+      content: [
+        {
+          type: "image",
+          data: base64String,
+          mimeType: "image/jpeg"
+        }
+      ]
+    }
+  }
+);
+
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);

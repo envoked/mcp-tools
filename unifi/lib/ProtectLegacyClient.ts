@@ -1,7 +1,6 @@
 /**
  * Library for interacting with the unofficial Unifi API. Sans API token.
  */
-import { fetch } from 'bun';
 
 export default class ProtectLegacyClient {
   private host: string;

@@ -9,7 +9,7 @@ export default class ProtectClient {
 
   private static getHeaders(): Headers {
     return new Headers({
-      'Content-Type': 'application/json',
+      'Accept': 'application/json',
       'X-API-KEY': this.API_KEY,
     });
   }
@@ -26,13 +26,18 @@ export default class ProtectClient {
     return res.json();
   }
 
-  static async getSnapshot(deviceId: string, camera: string ): Promise<Response> {
-    const endpoint = `/protect/integration/v1/cameras/${deviceId}/snapshot?highQuality=true`;
+  static async getSnapshot(cameraId: string ): Promise<Response> {
+    const endpoint = `/protect/integration/v1/cameras/${cameraId}/snapshot`;
     return await ProtectClient.makeRequest(endpoint, 'GET');
   }
 
   static async getDeviceList(): Promise<Response> {
     const endpoint = `/protect/integration/v1/devices`;
+    return await ProtectClient.makeRequest(endpoint, 'GET');
+  }
+
+  static async getCameras(): Promise<Response> {
+    const endpoint = `/protect/integration/v1/cameras`;
     return await ProtectClient.makeRequest(endpoint, 'GET');
   }
 
@@ -79,6 +84,7 @@ export default class ProtectClient {
     const url = `${ProtectClient.BASE_URL}${endpoint}`;
     return await fetch(url, {
       method,
+      credentials: 'include',
       headers: ProtectClient.getHeaders(),
       body: body ? JSON.stringify(body) : undefined,
     });
