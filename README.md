@@ -4,3 +4,4 @@ A collection of [MCP](https://modelcontextprotocol.io/introduction) servers for 
 
 
 - [Tempest Weather Station](tempest/README.md)
+- [Unifi](Unifi/README.md)
