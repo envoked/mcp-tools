@@ -50,7 +50,7 @@ server.tool(
       content: [
         {
           type: "text",
-          text: `: ${JSON.stringify(res)}`,
+          text: `Device Details: ${JSON.stringify(res)}`,
         }
       ]
     }
