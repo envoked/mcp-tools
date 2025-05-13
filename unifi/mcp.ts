@@ -5,8 +5,8 @@ import ProtectLegacyClient from "./lib/ProtectLegacyClient";
 import { DeviceResponse } from "./lib/types";
 import z from 'zod';
 
-const { UNIFI_USERNAME, UNIFI_PASSWORD } = process.env;
-
+const UNIFI_USERNAME = process.env.UNIFI_USERNAME || "";
+const UNIFI_PASSWORD = process.env.UNIFI_PASSWORD || "";
 
 // Create server instance
 const server = new McpServer({
@@ -101,6 +101,9 @@ server.tool(
     let client = new ProtectLegacyClient('https://192.168.0.1', UNIFI_USERNAME, UNIFI_PASSWORD);
     const isLogin = await client.login();
     const res = await client.getThumbnail(eventId);
+    if (!res.body) {
+      throw new Error("Response body is null");
+    }
     const arrBuff = await Bun.readableStreamToArrayBuffer(res.body);
     const base64String = Buffer.from(arrBuff).toString('base64');
     return {
@@ -119,14 +122,15 @@ server.tool(
   "get-last-detections",
   "Get the last n detections",
   {
+    detectType: z.enum(["vehicle", "person"]).describe("Detection type (vehicle or person)"),
     limit: z.number().describe("limit")
   },
-  async({ limit }) => {
+  async({ detectType, limit }) => {
     let client = new ProtectLegacyClient('https://192.168.0.1', UNIFI_USERNAME, UNIFI_PASSWORD);
     const isLogin = await client.login();
     let detections:any[] = [];
     if (isLogin) {
-      let res = await client.searchDetections('smartDetectType:vehicle', limit, 0, 'DESC');
+      let res = await client.searchDetections(detectType, limit, 0, 'DESC');
       let events = await res.json();
       detections = events.events;
     }

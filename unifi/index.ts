@@ -1,7 +1,8 @@
 import ProtectClient from "./lib/ProtectClient";
-import ProtectLegacyClient from './lib/ProtectLegacyClient';
+import ProtectLegacyClient from "./lib/ProtectLegacyClient";
+import Bun from "bun";
 
-const { UNIFI_USERNAME, UNIFI_PASSWORD } = process.env;
+const { UNIFI_USERNAME, UNIFI_PASSWORD } = Bun.env;
 
 (async () => {
   let client = new ProtectLegacyClient('https://192.168.0.1', UNIFI_USERNAME, UNIFI_PASSWORD);

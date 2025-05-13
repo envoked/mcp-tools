@@ -8,6 +8,7 @@ export default class ProtectLegacyClient {
   private password: string;
   private cookies: string[];
 
+
   constructor (host: string, username: string, password:string) {
     this.host = host;
     this.username = username;
@@ -15,6 +16,10 @@ export default class ProtectLegacyClient {
     this.cookies = [];
   }
 
+  /**
+   * Logs in to the Unifi Protect API and stores cookies for subsequent requests.
+   * @returns {Promise<boolean>} A promise that resolves to true if login is successful.
+   */
   async login(): Promise<boolean> {
     const endpoint = `${this.host}/api/auth/login`;
     const params = {
@@ -35,10 +40,18 @@ export default class ProtectLegacyClient {
     return true;
   }
 
-  async searchDetections(labels: string, limit: number, offset: number, orderDirection: string = 'DESC'): Promise<Response> {
+  /**
+   * Searches for detections based on the provided label, limit, offset, and order direction.
+   * @param {string} label - The label to search detections for.
+   * @param {number} limit - The maximum number of detections to retrieve.
+   * @param {number} offset - The offset for pagination.
+   * @param {string} [orderDirection='DESC'] - The order direction (e.g., 'ASC' or 'DESC').
+   * @returns {Promise<Response>} A promise that resolves to the response of the detection search.
+   */
+  async searchDetections(label: string, limit: number, offset: number, orderDirection: string = 'DESC'): Promise<Response> {
     const url = `${this.host}/proxy/protect/api/detection-search`;
     const queryParams = new URLSearchParams()
-    queryParams.append('labels', labels);
+    queryParams.append('labels', `searchDetections:${label}`);
     queryParams.append('limit', limit.toString());
     queryParams.append('offset', offset.toString());
     queryParams.append('orderDirection', orderDirection);
@@ -52,11 +65,23 @@ export default class ProtectLegacyClient {
     });
   }
 
+  /**
+   * Retrieves the thumbnail for a specific event.
+   * @param {string} eventId - The ID of the event to retrieve the thumbnail for.
+   * @returns {Promise<Response>} A promise that resolves to the response containing the thumbnail.
+   */
   async getThumbnail(eventId: string): Promise<Response> {
     const endpoint = `/protect/api/events/${eventId}/thumbnail`;
     return this.makeRequest(endpoint, 'GET');
   }
 
+  /**
+   * Makes a request to the Unifi Protect API with the specified endpoint, method, and optional body.
+   * @param {string} endpoint - The API endpoint to make the request to.
+   * @param {'GET' | 'POST' | 'PUT' | 'DELETE'} method - The HTTP method to use for the request.
+   * @param {Record<string, unknown>} [body] - The optional body to include in the request.
+   * @returns {Promise<Response>} A promise that resolves to the response of the request.
+   */
   private async makeRequest(
     endpoint: string,
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
