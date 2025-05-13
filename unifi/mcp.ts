@@ -5,8 +5,12 @@ import ProtectLegacyClient from "./lib/ProtectLegacyClient";
 import { DeviceResponse } from "./lib/types";
 import z from 'zod';
 
-const UNIFI_USERNAME = process.env.UNIFI_USERNAME || "";
-const UNIFI_PASSWORD = process.env.UNIFI_PASSWORD || "";
+const { UNIFI_USERNAME, UNIFI_PASSWORD } = Bun.env;
+
+// Make sure env variables are set
+if (!UNIFI_USERNAME || !UNIFI_PASSWORD) {
+  throw new Error("UNIFI_USERNAME and UNIFI_PASSWORD environment variables must be set");
+}
 
 // Create server instance
 const server = new McpServer({
