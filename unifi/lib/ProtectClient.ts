@@ -88,31 +88,14 @@ export default class ProtectClient {
   }
 
   /**
-   * Searches for detections based on labels, limit, offset, and order direction.
-   * @param {string} labels - The labels to search detections for.
-   * @param {number} limit - The maximum number of detections to retrieve.
-   * @param {number} offset - The offset for pagination.
-   * @param {string} [orderDirection='DESC'] - The order direction (e.g., 'ASC' or 'DESC').
-   * @returns {Promise<Response>} A promise that resolves to the detection search response.
+   * Retrieves a list of all sites.
+   * @template SiteResponse
+   * @returns {Promise<SiteResponse>} A promise that resolves to the list of sites.
    */
-  static async detectionSearch(labels: string, limit: number, offset: number, orderDirection: string = 'DESC') {
-    const endpoint = `/protect/api/detection-search`;
-    const queryParams = new URLSearchParams()
-    queryParams.append('labels', labels);
-    queryParams.append('limit', limit.toString());
-    queryParams.append('offset', offset.toString());
-    queryParams.append('orderDirection', orderDirection);
-    return await ProtectClient.makeRequest(`${endpoint}?${queryParams.toString()}`, 'GET');
-  }
-
-  /**
-   * Retrieves the thumbnail for a specific event.
-   * @param {string} eventId - The ID of the event to retrieve the thumbnail for.
-   * @returns {Promise<Response>} A promise that resolves to the thumbnail response.
-   */
-  static async getThumbnail(eventId: string): Promise<Response> {
-    const endpoint = `/protect/api/events/${eventId}/thumbnail`;
-    return await ProtectClient.makeRequest(endpoint, 'GET');
+  static async getSites<SiteResponse>(): Promise<SiteResponse> {
+    const endpoint = `/network/integration/v1/sites`;
+    const res = await ProtectClient.makeRequest(endpoint, 'GET');
+    return res.json() as SiteResponse;
   }
 
   /**

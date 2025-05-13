@@ -51,7 +51,7 @@ export default class ProtectLegacyClient {
   async searchDetections(label: string, limit: number, offset: number, orderDirection: string = 'DESC'): Promise<Response> {
     const url = `${this.host}/proxy/protect/api/detection-search`;
     const queryParams = new URLSearchParams()
-    queryParams.append('labels', `searchDetections:${label}`);
+    queryParams.append('labels', `smartDetectType:${label}`);
     queryParams.append('limit', limit.toString());
     queryParams.append('offset', offset.toString());
     queryParams.append('orderDirection', orderDirection);

@@ -13,6 +13,13 @@
       "cwd": "${workspaceFolder}",
       "stopOnEntry": false,
       "watchMode": false,
+      "env": {
+        "UNIFI_SITE_ID": "88f7af54-98f8-306a-a1c7-c9349722b1f6",
+        "PROTECT_API_KEY": "DsB29dEjkDG0Z6dt_b1kjXDSmiODXEUe",
+        "UNIFI_USERNAME": "guard",
+        "UNIFI_PASSWORD": "yJwp.n7PaGkD",
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+      }
     },
     {
       "type": "bun",
