@@ -5,10 +5,10 @@ import ProtectLegacyClient from "./lib/ProtectLegacyClient";
 import { DeviceResponse } from "./lib/types";
 import z from 'zod';
 
-const { UNIFI_USERNAME, UNIFI_PASSWORD } = Bun.env;
+const { UNIFI_USERNAME, UNIFI_PASSWORD, UNIFI_SITE_ID } = Bun.env;
 
 // Make sure env variables are set
-if (!UNIFI_USERNAME || !UNIFI_PASSWORD) {
+if (!UNIFI_SITE_ID || !UNIFI_USERNAME || !UNIFI_PASSWORD) {
   throw new Error("UNIFI_USERNAME and UNIFI_PASSWORD environment variables must be set");
 }
 
@@ -26,7 +26,7 @@ server.tool(
   "get-network-clients",
   "Get a list of current clients connected to the network",
   async() => {
-    let res:DeviceResponse = await ProtectClient.getClients('88f7af54-98f8-306a-a1c7-c9349722b1f6');
+    let res:DeviceResponse = await ProtectClient.getClients(UNIFI_SITE_ID);
     return {
       content: [
         {
@@ -45,7 +45,7 @@ server.tool(
     deviceId: z.string().describe("Station id")
   },
   async({ deviceId }) => {
-    let res = await ProtectClient.getClientDetails('88f7af54-98f8-306a-a1c7-c9349722b1f6', deviceId);
+    let res = await ProtectClient.getClientDetails(UNIFI_SITE_ID, deviceId);
     return {
       content: [
         {
