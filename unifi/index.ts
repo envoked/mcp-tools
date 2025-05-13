@@ -1,7 +1,14 @@
 import ProtectClient from "./lib/ProtectClient";
+import ProtectLegacyClient from './lib/ProtectLegacyClient';
+
+const { UNIFI_USERNAME, UNIFI_PASSWORD } = process.env;
+
 (async () => {
-  let res = await ProtectClient.getSnapshot('66fd86f201bf2903e40022d0');
-  const data = await res.arrayBuffer()
-  const base64String = Buffer.from(data).toString('base64');
-  console.log(base64String);
+  let client = new ProtectLegacyClient('https://192.168.0.1', UNIFI_USERNAME, UNIFI_PASSWORD);
+  const isLogin = await client.login();
+  if (isLogin) {
+    let res = await client.searchDetections('smartDetectType:vehicle', 10, 0, 'DESC');
+    let events = await res.json();
+    console.log(events);
+  }
 })();

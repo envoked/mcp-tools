@@ -52,4 +52,25 @@ export default class ProtectLegacyClient {
     });
   }
 
+  async getThumbnail(eventId: string): Promise<Response> {
+    const endpoint = `/protect/api/events/${eventId}/thumbnail`;
+    return this.makeRequest(endpoint, 'GET');
+  }
+
+  private async makeRequest(
+    endpoint: string,
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    body?: Record<string, unknown>
+  ): Promise<Response> {
+    const url = `${this.host}/proxy/${endpoint}`;
+    return await fetch(url, {
+      credentials: 'include',
+      method,
+      headers: new Headers({
+        'Cookie': this.cookies.join(';')
+      }),
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  }
+
 }

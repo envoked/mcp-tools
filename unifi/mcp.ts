@@ -1,8 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import ProtectClient from "./lib/ProtectClient";
+import ProtectLegacyClient from "./lib/ProtectLegacyClient";
 import { DeviceResponse } from "./lib/types";
 import z from 'zod';
+
+const { UNIFI_USERNAME, UNIFI_PASSWORD } = process.env;
 
 
 // Create server instance
@@ -82,6 +85,56 @@ server.tool(
           type: "image",
           data: base64String,
           mimeType: "image/jpeg"
+        }
+      ]
+    }
+  }
+);
+
+server.tool(
+  "get-detection-thumbnail",
+  "Get a thumbnail of a detection",
+  {
+    eventId: z.string().describe("eventId")
+  },
+  async({ eventId }) => {
+    let client = new ProtectLegacyClient('https://192.168.0.1', UNIFI_USERNAME, UNIFI_PASSWORD);
+    const isLogin = await client.login();
+    const res = await client.getThumbnail(eventId);
+    const arrBuff = await Bun.readableStreamToArrayBuffer(res.body);
+    const base64String = Buffer.from(arrBuff).toString('base64');
+    return {
+      content: [
+        {
+          type: "image",
+          data: base64String,
+          mimeType: "image/jpeg"
+        }
+      ]
+    }
+  }
+);
+
+server.tool(
+  "get-last-detections",
+  "Get the last n detections",
+  {
+    limit: z.number().describe("limit")
+  },
+  async({ limit }) => {
+    let client = new ProtectLegacyClient('https://192.168.0.1', UNIFI_USERNAME, UNIFI_PASSWORD);
+    const isLogin = await client.login();
+    let detections:any[] = [];
+    if (isLogin) {
+      let res = await client.searchDetections('smartDetectType:vehicle', limit, 0, 'DESC');
+      let events = await res.json();
+      detections = events.events;
+    }
+    return {
+      content: [
+        {
+          type: "text",
+          text: JSON.stringify(detections),
         }
       ]
     }
