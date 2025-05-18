@@ -72,12 +72,16 @@ export default class ProtectLegacyClient {
     } = params;
     const url = `${this.host}/proxy/protect/api/detection-search`;
     const queryParams = new URLSearchParams();
+    queryParams.append('orderDirection', orderDirection);
+
     if (label) queryParams.append('labels', `smartDetectType:${label}`);
     if (typeof limit === 'number') queryParams.append('limit', limit.toString());
     if (typeof offset === 'number') queryParams.append('offset', offset.toString());
-    queryParams.append('orderDirection', orderDirection);
-    if (timeStart) queryParams.append('start', Date.parse(timeStart).toString());
-    if (timeEnd) queryParams.append('end', Date.parse(timeEnd).toString());
+
+    const parsedStart = timeStart && Date.parse(timeStart);
+    const parsedEnd = timeEnd && Date.parse(timeEnd);
+    if (parsedStart) queryParams.append('start', parsedStart.toString());
+    if (parsedEnd) queryParams.append('end', parsedEnd.toString());
     if (devices && devices.length > 0) queryParams.append('devices', devices.join(','));
 
     return await fetch(`${url}?${queryParams.toString()}`, {
