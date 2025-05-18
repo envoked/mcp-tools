@@ -40,21 +40,45 @@ export default class ProtectLegacyClient {
     return true;
   }
 
-  /**
-   * Searches for detections based on the provided label, limit, offset, and order direction.
-   * @param {string} label - The label to search detections for.
-   * @param {number} limit - The maximum number of detections to retrieve.
-   * @param {number} offset - The offset for pagination.
-   * @param {string} [orderDirection='DESC'] - The order direction (e.g., 'ASC' or 'DESC').
-   * @returns {Promise<Response>} A promise that resolves to the response of the detection search.
-   */
-  async searchDetections(label: string, limit: number, offset: number, orderDirection: string = 'DESC'): Promise<Response> {
+/**
+ * Searches for detections based on the provided parameters.
+ * @param {Object} params - The parameters for the detection search.
+ * @param {string} [params.label] - The smart detect type label to search detections for.
+ * @param {number} [params.limit] - The maximum number of detections to retrieve.
+ * @param {number} [params.offset] - The offset for pagination.
+ * @param {string} [params.orderDirection='DESC'] - The order direction ('ASC' or 'DESC').
+ * @param {string} [params.timeStart] - The start time for the search range in a format parseable by Date.parse().
+ * @param {string} [params.timeEnd] - The end time for the search range in a format parseable by Date.parse().
+ * @param {string[]} [params.devices] - Array of device IDs to filter the search by.
+ * @returns {Promise<Response>} A promise that resolves to the response of the detection search.
+ */
+  async searchDetections(params: {
+    label?: string;
+    limit?: number;
+    offset?: number;
+    orderDirection?: string;
+    timeStart?: string;
+    timeEnd?: string;
+    devices?: string[];
+  } = {}): Promise<Response> {
+    const {
+      label,
+      limit,
+      offset,
+      orderDirection = 'DESC',
+      timeStart,
+      timeEnd,
+      devices
+    } = params;
     const url = `${this.host}/proxy/protect/api/detection-search`;
-    const queryParams = new URLSearchParams()
-    queryParams.append('labels', `smartDetectType:${label}`);
-    queryParams.append('limit', limit.toString());
-    queryParams.append('offset', offset.toString());
+    const queryParams = new URLSearchParams();
+    if (label) queryParams.append('labels', `smartDetectType:${label}`);
+    if (typeof limit === 'number') queryParams.append('limit', limit.toString());
+    if (typeof offset === 'number') queryParams.append('offset', offset.toString());
     queryParams.append('orderDirection', orderDirection);
+    if (timeStart) queryParams.append('start', Date.parse(timeStart).toString());
+    if (timeEnd) queryParams.append('end', Date.parse(timeEnd).toString());
+    if (devices && devices.length > 0) queryParams.append('devices', devices.join(','));
 
     return await fetch(`${url}?${queryParams.toString()}`, {
       credentials: 'include',

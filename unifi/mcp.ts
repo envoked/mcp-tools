@@ -123,18 +123,29 @@ server.tool(
 );
 
 server.tool(
-  "get-last-detections",
-  "Get the last n detections",
+  "get-detections",
+  "Get the n detections of detectType between start and end",
   {
     detectType: z.enum(["vehicle", "person"]).describe("Detection type (vehicle or person)"),
-    limit: z.number().describe("limit")
+    limit: z.number().describe("limit"),
+    timeStart: z.string().describe("start date in YYYY.MM.DD format"),
+    timeEnd: z.string().describe("end date in YYYY.MM.DD format"),
+    cameras: z.array(z.string()).describe('List of camera device ids'),
   },
-  async({ detectType, limit }) => {
+  async({ detectType, limit, timeStart, timeEnd, cameras }) => {
     let client = new ProtectLegacyClient('https://192.168.0.1', UNIFI_USERNAME, UNIFI_PASSWORD);
     const isLogin = await client.login();
     let detections:any[] = [];
     if (isLogin) {
-      let res = await client.searchDetections(detectType, limit, 0, 'DESC');
+      let res = await client.searchDetections({
+        label: detectType,
+        limit: limit,
+        offset: 0,
+        orderDirection: 'DESC',
+        timeStart: timeStart,
+        timeEnd: timeEnd,
+        devices: cameras.map(c => `camera:${c}`)
+      });
       let events = await res.json();
       detections = events.events;
     }
