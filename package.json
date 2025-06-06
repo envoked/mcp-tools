@@ -1,5 +1,8 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.25.56"
+  },
   "devDependencies": {
     "@types/bun": "^1.2.13",
     "@types/node": "^22.15.17"
