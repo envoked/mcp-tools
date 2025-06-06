@@ -33,7 +33,7 @@ async function authenticate() {
   if (!isAuthenticated) {
     throw new Error("Failed to authenticate with Fisheries API");
   }
-  console.error("Successfully authenticated with Fisheries API");
+  console.log("Successfully authenticated with Fisheries API");
 }
 
 server.tool(
