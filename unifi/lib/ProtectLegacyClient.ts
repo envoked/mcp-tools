@@ -17,6 +17,28 @@ export default class ProtectLegacyClient {
   }
 
   /**
+   * Gets the headers for API requests including cookies if available
+   * @param {boolean} includeContentType - Whether to include Content-Type header
+   * @returns {Headers} Headers object with appropriate headers
+   */
+  private getHeaders(includeContentType: boolean = false): Headers {
+    const headers = new Headers({
+      'Accept': 'application/json',
+      'User-Agent': 'mcp-tools-unifi-protect-legacy/1.0',
+    });
+
+    if (includeContentType) {
+      headers.append('Content-Type', 'application/json');
+    }
+
+    if (this.cookies.length > 0) {
+      headers.append('Cookie', this.cookies.join('; '));
+    }
+
+    return headers;
+  }
+
+  /**
    * Logs in to the Unifi Protect API and stores cookies for subsequent requests.
    * @returns {Promise<boolean>} A promise that resolves to true if login is successful.
    */
@@ -30,10 +52,7 @@ export default class ProtectLegacyClient {
     };
     const res = await fetch(endpoint, {
       method: 'POST',
-      headers: new Headers({
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }),
+      headers: this.getHeaders(true), // Include Content-Type
       body: JSON.stringify(params),
     });
     this.cookies = res.headers.getSetCookie();
@@ -87,9 +106,7 @@ export default class ProtectLegacyClient {
     return await fetch(`${url}?${queryParams.toString()}`, {
       credentials: 'include',
       method: 'GET',
-      headers: new Headers({
-        'Cookie': this.cookies.join(';')
-      }),
+      headers: this.getHeaders(),
     });
   }
 
@@ -119,9 +136,7 @@ export default class ProtectLegacyClient {
     return await fetch(url, {
       credentials: 'include',
       method,
-      headers: new Headers({
-        'Cookie': this.cookies.join(';')
-      }),
+      headers: this.getHeaders(body !== undefined), // Include Content-Type if there's a body
       body: body ? JSON.stringify(body) : undefined,
     });
   }
