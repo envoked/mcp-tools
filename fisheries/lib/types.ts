@@ -150,8 +150,8 @@ export interface PurchaseOrder {
   orders: OrderDetail[];
 }
 
-// Order value
-export interface OrderValue {
+// Order details
+export interface FisheriesOrderDetails {
   id: string;
   name: string;
   items: OrderItem[];
@@ -159,11 +159,11 @@ export interface OrderValue {
 }
 
 // Response type
-export interface FisheriesOrderDetails {
+export interface FisheriesOrderResponse {
   success: boolean;
   message: string;
   errors: any[];
-  value: OrderValue[];
+  value: FisheriesOrderDetails[];
   expectations: any;
   completedTransactions: any;
 }

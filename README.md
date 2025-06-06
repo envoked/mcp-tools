@@ -53,7 +53,7 @@ Each service directory has a `sample.env` file that can be used as a template fo
 
 This project requires various API keys and credentials to function. Follow these best practices:
 
-1. **Never commit credentials**: 
+1. **Never commit credentials**:
    - Always use `.env` files or environment variables
    - Use the provided sample files as templates
    - Double-check your commits to ensure no secrets are included

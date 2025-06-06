@@ -3,6 +3,7 @@ import type {
   FisheriesCredentials,
   FisheriesOrder,
   FisheriesOrderDetails,
+  FisheriesOrderResponse,
   OrdersResponse
 } from './types';
 
@@ -112,20 +113,24 @@ export class FisheriesClient {
    * @param orderId The ID of the order to retrieve
    * @returns Promise resolving to order details
    */
-  async getOrderDetails(orderId: string): Promise<FisheriesOrderDetails> {
+  async getOrderDetails(orderId: string): Promise<FisheriesOrderDetails[]> {
     this.checkAuthentication();
 
     try {
-      const response = await fetch(`${this.baseUrl}/orders/${orderId}`, {
-        method: 'GET',
+      const response = await fetch(`${this.baseUrl}/orderhistory/orderDetails`, {
+        method: 'POST',
         headers: this.getHeaders(),
+        credentials: 'include',
+        body: JSON.stringify({'orderNo': orderId})
       });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      return await response.json() as FisheriesOrderDetails;
+      const orderDetails = await response.json() as FisheriesOrderResponse;
+      return orderDetails.value;
+
     } catch (error) {
       console.error(`Failed to fetch details for order ${orderId}:`, error);
       throw error;
@@ -153,5 +158,5 @@ export const login = (credentials: FisheriesCredentials): Promise<boolean> =>
 export const getOrders = (limit?: number): Promise<FisheriesOrder[]> =>
   defaultClient.getOrders(limit);
 
-export const getOrderDetails = (orderId: string): Promise<FisheriesOrderDetails> =>
+export const getOrderDetails = (orderId: string): Promise<FisheriesOrderDetails[]> =>
   defaultClient.getOrderDetails(orderId);

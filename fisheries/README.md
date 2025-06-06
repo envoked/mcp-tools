@@ -1,4 +1,7 @@
-# fisheries
+# FisheriesSupply
+An [MCP](https://modelcontextprotocol.io/introduction) Server for pulling order information from [Fisheries Supply](https://www.fisheriessupply.com/) using their unofficial API.
+
+![Screencast](http://share.yoadrian.co/Screen-Capture-2025-06-06-15-58-27/Screen-Capture-2025-06-06-15-58-27.gif)
 
 To install dependencies:
 
@@ -12,4 +15,5 @@ To run:
 bun run index.ts
 ```
 
-This project was created using `bun init` in bun v1.2.5. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+## Configuration:
+This relies on a `FISHERIES_USERNAME` and `FISHERIES_PASSWORD` environment variable being set.

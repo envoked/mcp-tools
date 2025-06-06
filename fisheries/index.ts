@@ -23,6 +23,17 @@ const { FISHERIES_USERNAME, FISHERIES_PASSWORD } = Bun.env;
     // Display the orders
     console.log(`Retrieved ${orders.length} orders:`);
     console.log(JSON.stringify(orders, null, 2));
+    // Get order details
+    const  orderNumber = orders[0]?.orderNumber;
+    console.log(`Retrieving details for orderNumber: ${orderNumber}`);
+  if (orderNumber) {
+    const orderDetails = await client.getOrderDetails(orderNumber);
+    console.log(orderDetails);
+  }
+
+
+
+
   } catch (error) {
     console.error("Error:", error.message);
   }

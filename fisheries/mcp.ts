@@ -27,7 +27,7 @@ const client = new FisheriesClient();
 let isAuthenticated = false;
 async function authenticate() {
   isAuthenticated = await client.login({
-    username: FISHERIES_USERNAME as string,
+    email: FISHERIES_USERNAME as string,
     password: FISHERIES_PASSWORD as string
   });
   if (!isAuthenticated) {
