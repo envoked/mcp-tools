@@ -58,8 +58,8 @@ export class FisheriesClient {
 
       // Save cookies for subsequent requests
       // Parse relevant cookies from response
-      const setCookieHeader = response.headers.getSetCookie();
-      const relevantCookies = setCookieHeader.filter(cookie => {
+      const setCookieHeader = response.headers.getSetCookie() ?? [];
+      const relevantCookies = Array.isArray(setCookieHeader) ? setCookieHeader.filter(cookie => {
         return cookie.includes('exp_seg=') ||
                cookie.includes('experimentation_group=') ||
                cookie.includes('com.fisheriessupply.user=') ||
