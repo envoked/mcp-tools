@@ -20,6 +20,9 @@
         "UNIFI_PASSWORD": "your-password",
         "FISHERIES_USERNAME": "your-fisheries-email",
         "FISHERIES_PASSWORD": "your-fisheries-password",
+        "TESLA_CLIENT_ID": "your-tesla-client-id",
+        "TESLA_CLIENT_SECRET": "your-tesla-client-secret",
+        "TESLA_REDIRECT_URI": "your-tesla-redirect-uri",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       }
     },
