@@ -1,7 +1,7 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import { getForecast, getStations } from "./TempestClient";
+import { getForecast, getStations } from "./TempestClient.ts";
 import type { TempestStationsResponse, TempestWeatherData } from "./types.ts";
 
 
@@ -16,7 +16,7 @@ const server = new McpServer({
 });
 
 server.tool(
-  "get-current-weather",
+  "current-weather",
   "Get the current weather at a given station",
   {
     stationId: z.number().describe("Station id")
