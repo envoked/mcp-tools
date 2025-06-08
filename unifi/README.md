@@ -22,8 +22,8 @@ bun run index.ts
 PROTECT_API_KEY= {Get from control pane}
 
 **Unofficial API (Recommend creating another user with limited permissions)**
-UNIFI_USERNAME=.
-UNIFI_PASSWORD=yJwp.n7PaGkD
+UNIFI_USERNAME=
+UNIFI_PASSWORD=
 
 **Sometimes NODE will bark at the Unifi cert requiring this var to be set**
 NODE_TLS_REJECT_UNAUTHORIZED=0

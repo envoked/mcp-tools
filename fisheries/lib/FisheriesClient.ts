@@ -59,16 +59,16 @@ export class FisheriesClient {
       // Save cookies for subsequent requests
       // Parse relevant cookies from response
       const setCookieHeader = response.headers.getSetCookie() ?? [];
-      const relevantCookies = Array.isArray(setCookieHeader) ? setCookieHeader.filter(cookie => {
-        return cookie.includes('exp_seg=') ||
-               cookie.includes('experimentation_group=') ||
-               cookie.includes('com.fisheriessupply.user=') ||
-               cookie.includes('com.fisheriessupply.shopper=') ||
-               cookie.includes('com.fisheriessupply.gs=') ||
-               cookie.includes('com.fisheriessupply.customer=') ||
-               cookie.includes('cf_clearance=') ||
-               cookie.includes('com.fisheriessupply.guest=');
-      });
+      const relevantCookies = Array.isArray(setCookieHeader) ? setCookieHeader.filter(cookie =>
+        cookie.includes('exp_seg=') ||
+        cookie.includes('experimentation_group=') ||
+        cookie.includes('com.fisheriessupply.user=') ||
+        cookie.includes('com.fisheriessupply.shopper=') ||
+        cookie.includes('com.fisheriessupply.gs=') ||
+        cookie.includes('com.fisheriessupply.customer=') ||
+        cookie.includes('cf_clearance=') ||
+        cookie.includes('com.fisheriessupply.guest=')
+      ) : [];
       this.cookies = relevantCookies;
 
       return true;
@@ -147,16 +147,3 @@ export class FisheriesClient {
     }
   }
 }
-
-// Create a default client instance for backward compatibility
-const defaultClient = new FisheriesClient();
-
-// Export functions from default client for backward compatibility
-export const login = (credentials: FisheriesCredentials): Promise<boolean> =>
-  defaultClient.login(credentials);
-
-export const getOrders = (limit?: number): Promise<FisheriesOrder[]> =>
-  defaultClient.getOrders(limit);
-
-export const getOrderDetails = (orderId: string): Promise<FisheriesOrderDetails[]> =>
-  defaultClient.getOrderDetails(orderId);

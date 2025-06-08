@@ -20,6 +20,7 @@ export default class ProtectClient {
     return new Headers({
       'Accept': 'application/json',
       'X-API-KEY': this.API_KEY,
+      'User-Agent': 'mcp-tools-unifi-protect/1.0',
     });
   }
 

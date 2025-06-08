@@ -7,7 +7,7 @@ const BASE_API= "https://swd.weatherflow.com/swd/rest/observations/station";
 
 
 const headers: Record<string, string> = {
-  'user-agent': "tempest-weather/1.0",
+  'User-Agent': "mcp-tools-tempest/1.0",
   'token': TEMPEST_TOKEN || "",
 };
 
