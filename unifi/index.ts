@@ -6,7 +6,7 @@ const { UNIFI_USERNAME, UNIFI_PASSWORD } = Bun.env;
 (async () => {
 
   if (!UNIFI_USERNAME|| !UNIFI_PASSWORD) {
-    console.error("Please set FISHERIES_USERNAME and FISHERIES_PASSWORD environment variables");
+    console.error("Please set UNIFI_USERNAME and UNIFI_PASSWORD environment variables");
     process.exit(1);
   }
   let client = new ProtectLegacyClient('https://192.168.0.1', UNIFI_USERNAME, UNIFI_PASSWORD);
