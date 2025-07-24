@@ -83,4 +83,4 @@ async function main() {
 main().catch((err) => {
   console.error("Fatal error in main:", err);
   process.exit(1);
-})
+});
