@@ -5,6 +5,7 @@ A collection of [MCP](https://modelcontextprotocol.io/introduction) servers for 
 - [Unifi](unifi/README.md)
 - [Pushify](pushify/README.md)
 - [Fisheries](fisheries/README.md)
+- [Whoop](whoop/README.md)
 
 ## Development Setup
 
