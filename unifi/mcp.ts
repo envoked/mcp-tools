@@ -3,7 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import ProtectClient from "./lib/ProtectClient";
 import ProtectLegacyClient from "./lib/ProtectLegacyClient";
 import { DeviceResponse } from "./lib/types";
-import z from 'zod';
+import { z } from 'zod';
 
 const { UNIFI_USERNAME, UNIFI_PASSWORD, UNIFI_SITE_ID } = Bun.env;
 
@@ -25,6 +25,7 @@ const server = new McpServer({
 server.tool(
   "get-network-clients",
   "Get a list of current clients connected to the network",
+  {},
   async() => {
     let res:DeviceResponse = await ProtectClient.getClients(UNIFI_SITE_ID);
     return {
@@ -60,6 +61,7 @@ server.tool(
 server.tool(
   "get-cameras",
   "Get a list of all cameras connected",
+  {},
   async() => {
     let res = await ProtectClient.getCameras();
     const data = await res.json()

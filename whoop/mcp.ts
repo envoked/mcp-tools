@@ -5,7 +5,7 @@ import { getWorkouts, getSleep, getCycles } from "./WhoopClient.ts";
 
 // Create server instance
 const server = new McpServer({
-  name: "whoop-server",
+  name: "whoop",
   version: "1.0.0",
   capabilities: {
     resources: {},
@@ -18,11 +18,11 @@ server.tool(
   "get-workouts",
   "Get workouts from Whoop",
   {
-    start: z.string().optional().describe("Start date (YYYY-MM-DD)"),
-    end: z.string().optional().describe("End date (YYYY-MM-DD)")
+    start: z.string().optional().describe("Start date in YYYY-MM-DD"),
+    end: z.string().optional().describe("End date in YYYY-MM-DD")
   },
   async ({ start, end }) => {
-    const workouts = await getWorkouts(start, end);
+    const workouts = await getWorkouts();
     return {
       content: [
         {

@@ -7,7 +7,7 @@ import type { TempestStationsResponse, TempestWeatherData } from "./types.ts";
 
 // Create server instance
 const server = new McpServer({
-  name: "tempest-weather",
+  name: "tempest",
   version: "1.0.0",
   capabilities: {
     resources: {},
